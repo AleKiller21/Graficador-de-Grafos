@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtCore>
 #include <QGraphicsScene>
-//#include <QGraphicsTextItem>
+#include <QGraphicsEllipseItem>
 #include "Vertice.h"
 
 template <class T>
@@ -78,7 +78,11 @@ public:
             aristas.agregar(arista);
             ver_origen->aristas.agregar(arista);
             ver_destino->aristas_destino.agregar(arista);
-            arista->line = addLine(ver_origen->pos().x()+100, ver_origen->pos().y()+50, ver_destino->pos().x(), ver_destino->pos().y()+50);
+
+            arista->line = addLine(ver_origen->pos().x()+50, ver_origen->pos().y()+50, ver_destino->pos().x(), ver_destino->pos().y()+50);
+            QGraphicsEllipseItem* punto = addEllipse(ver_destino->pos().x(), ver_destino->pos().y()+50, 6, 6, QPen(), QBrush(Qt::SolidPattern));
+            ver_destino->puntos.agregar(punto);
+
             arista->text = addText(QString::number(peso));
             arista->text->setPos((ver_origen->pos().x() + ver_destino->pos().x())/2, (ver_origen->pos().y() + ver_destino->pos().y())/2);
 
@@ -87,6 +91,7 @@ public:
                 Arista<T>* arista2 = new Arista<T>(ver_destino, ver_origen, peso);
                 aristas.agregar(arista2);
                 ver_destino->aristas.agregar(arista2);
+                //ver_origen->aristas_destino.agregar(arista2);
             }
         }
     }
