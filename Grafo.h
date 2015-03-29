@@ -4,7 +4,7 @@
 #include <QtGui>
 #include <QtCore>
 #include <QGraphicsScene>
-#include <QGraphicsTextItem>
+//#include <QGraphicsTextItem>
 #include "Vertice.h"
 
 template <class T>
@@ -59,6 +59,7 @@ public:
             addItem(vertice);
             vertices.agregar(vertice);
             vertice->setFlag(QGraphicsItem::ItemIsMovable);
+            vertice->setFlag(QGraphicsItem::ItemSendsScenePositionChanges);
         }
 
         //BORRAR
@@ -76,9 +77,10 @@ public:
             Arista<T>* arista = new Arista<T>(ver_origen, ver_destino, peso);
             aristas.agregar(arista);
             ver_origen->aristas.agregar(arista);
+            ver_destino->aristas_destino.agregar(arista);
             arista->line = addLine(ver_origen->pos().x()+100, ver_origen->pos().y()+50, ver_destino->pos().x(), ver_destino->pos().y()+50);
-            QGraphicsTextItem* text = addText(QString::number(peso));
-            text->setPos((ver_origen->pos().x() + ver_destino->pos().x())/2, (ver_origen->pos().y() + ver_destino->pos().y())/2);
+            arista->text = addText(QString::number(peso));
+            arista->text->setPos((ver_origen->pos().x() + ver_destino->pos().x())/2, (ver_origen->pos().y() + ver_destino->pos().y())/2);
 
             if(no_dirigido)
             {

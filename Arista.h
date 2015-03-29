@@ -2,6 +2,7 @@
 #define ARISTA_H
 
 #include <QGraphicsLineItem>
+#include <QGraphicsTextItem>
 
 template <class T>
 class Vertice;
@@ -13,6 +14,7 @@ public:
     Vertice<T>* origen;
     Vertice<T>* destino;
     QGraphicsLineItem* line;
+    QGraphicsTextItem* text;
     int peso;
 
     Arista(Vertice<T>* origen, Vertice<T>* destino, int peso)
@@ -21,6 +23,7 @@ public:
         this->destino = destino;
         this->peso = peso;
         this->line = NULL;
+        this->text = NULL;
     }
 
     virtual ~Arista() {}
