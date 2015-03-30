@@ -119,76 +119,6 @@ public:
         }
     }
 
-    void eliminarAristaNoDirigido(T origen, T destino)
-    {
-        Vertice<T>* ver_origen = obtenerVertice(origen);
-        Vertice<T>* ver_destino = obtenerVertice(destino);
-        Arista<T>* arista = NULL;
-        Arista<T>* arista2 = NULL;
-
-        for(int i = 0; i < ver_origen->aristas.getCantidad(); i++)
-        {
-            if(ver_origen->aristas.obtenerValor(i)->destino == ver_destino)
-            {
-                ver_origen->aristas.eliminar(i);
-                break;
-            }
-        }
-
-        for(int i = 0; i < ver_origen->aristas_destino.getCantidad(); i++)
-        {
-            if(ver_origen->aristas_destino.obtenerValor(i)->origen == ver_destino)
-            {
-                ver_origen->aristas_destino.eliminar(i);
-                break;
-            }
-        }
-
-        for(int i = 0; i < ver_destino->aristas.getCantidad(); i++)
-        {
-            if(ver_destino->aristas.obtenerValor(i)->destino == ver_origen)
-            {
-                ver_destino->aristas.eliminar(i);
-                break;
-            }
-        }
-
-        for(int i = 0; i < ver_destino->aristas_destino.getCantidad(); i++)
-        {
-            if(ver_destino->aristas_destino.obtenerValor(i)->origen == ver_origen)
-            {
-                ver_destino->aristas_destino.eliminar(i);
-                break;
-            }
-        }
-
-        for(int i = 0; i < aristas.getCantidad(); i++)
-        {
-            if(aristas.obtenerValor(i)->origen == ver_origen && aristas.obtenerValor(i)->destino == ver_destino)
-            {
-                arista = aristas.obtenerValor(i);
-                aristas.eliminar(i);
-                break;
-            }
-        }
-
-        for(int i = 0; i < aristas.getCantidad(); i++)
-        {
-            if(aristas.obtenerValor(i)->origen == ver_destino && aristas.obtenerValor(i)->destino == ver_origen)
-            {
-                arista2 = aristas.obtenerValor(i);
-                aristas.eliminar(i);
-                break;
-            }
-        }
-
-        if(arista != NULL && arista2 != NULL)
-        {
-            delete arista;
-            delete arista2;
-        }
-    }
-
     void eliminarArista(T origen, T destino)
     {
         Vertice<T>* ver_origen = obtenerVertice(origen);
@@ -286,6 +216,14 @@ public:
             matriz[i] = new int[cantidad];
         }
 
+        for(int i = 0; i < cantidad; i++)
+        {
+            for(int j = 0; j < cantidad; j++)
+            {
+                matriz[i][j] = 0;
+            }
+        }
+
         for(int i = 0; i < aristas.getCantidad(); i++)
         {
             int origen = vertices.obtenerPosicion(aristas.obtenerValor(i)->origen);
@@ -309,6 +247,28 @@ public:
         }
 
         delete[] matriz;
+    }
+
+    void actualizarMatrizEscena(QGraphicsScene* scene, int** matriz)
+    {
+        QGraphicsTextItem* peso;
+        int pos_x = 0;
+        int pos_y = 0;
+
+        for(int i = 0; i < vertices.getCantidad(); i++)
+        {
+            for(int j = 0; j < vertices.getCantidad(); j++)
+            {
+                peso = scene->addText(QString::number(matriz[i][j]));
+                peso->setFlag(QGraphicsItem::ItemIsMovable);
+                peso->setPos(pos_x, pos_y);
+                peso->setFont(QFont("Arial", 12, QFont::Bold));
+                pos_x+= 25;
+            }
+
+            pos_y+= 25;
+            pos_x = 0;
+        }
     }
 
     virtual ~Grafo() {}

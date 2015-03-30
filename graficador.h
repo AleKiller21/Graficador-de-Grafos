@@ -3,7 +3,6 @@
 
 #include <QWidget>
 #include "Grafo.h"
-//#include "grafoseleccion.h"
 
 namespace Ui
 {
@@ -29,10 +28,13 @@ private slots:
 
     void on_btnEliminarArista_clicked();
 
+    void on_btnMatrizAdyacencia_clicked();
+
 private:
     Ui::Graficador *ui;
     Grafo<QString>* grafo;
-    //GrafoSeleccion* grafoSeleccion;
+    QGraphicsScene* matrizView;
+    int** matrizAdyacencia;
 };
 
 #endif // GRAFICADOR_H
