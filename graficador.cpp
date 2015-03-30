@@ -4,7 +4,7 @@
 Graficador::Graficador(QWidget *parent) : QWidget(parent), ui(new Ui::Graficador)
 {
     ui->setupUi(this);
-    grafo = new Grafo<QString>();
+    grafo = new Grafo<QString>(tipo_grafo);
     ui->GrafoView->setScene(grafo);
     grafo->setSceneRect(0, 0, 851, 691);
    // grafoSeleccion = new GrafoSeleccion;
@@ -36,7 +36,15 @@ void Graficador::on_btnAgregarArista_clicked()
         QString destino = ui->lineEditDestino->text();
         int peso = ui->lineEditPeso->text().toInt();
 
-        grafo->agregarArista(origen, destino, peso, false);
+        if(tipo_grafo == 1)
+        {
+            grafo->agregarArista(origen, destino, peso, false);
+        }
+
+        else
+        {
+            grafo->agregarArista(origen, destino, peso, true);
+        }
     }
 
     ui->lineEditOrigen->setText("");
@@ -65,6 +73,12 @@ void Graficador::on_btnEliminarArista_clicked()
         if(tipo_grafo == 1)
         {
             grafo->eliminarArista(origen, destino);
+        }
+
+        else
+        {
+            grafo->eliminarArista(origen, destino);
+            grafo->eliminarArista(destino, origen);
         }
     }
 

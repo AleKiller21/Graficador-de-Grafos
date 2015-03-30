@@ -6,6 +6,7 @@ GrafoSeleccion::GrafoSeleccion(QWidget *parent) : QWidget(parent), ui(new Ui::Gr
     ui->setupUi(this);
     this->opcion = 0;
     graficador = new Graficador();
+    this->setWindowTitle("Seleccione un tipo de grafo");
 }
 
 GrafoSeleccion::~GrafoSeleccion()
@@ -19,6 +20,7 @@ void GrafoSeleccion::on_btnIniciar_clicked()
     {
         this->opcion = 1;
         graficador->tipo_grafo = opcion;
+        this->graficador->setWindowTitle("Grafo Dirigido");
         this->hide();
         this->graficador->show();
     }
@@ -27,6 +29,7 @@ void GrafoSeleccion::on_btnIniciar_clicked()
     {
         this->opcion = 2;
         graficador->tipo_grafo = opcion;
+        this->graficador->setWindowTitle("Grafo No Dirigido");
         this->hide();
         this->graficador->show();
     }
