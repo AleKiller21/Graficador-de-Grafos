@@ -2,10 +2,8 @@
 #define GRAFICADOR_H
 
 #include <QWidget>
-//#include <QtGui>
-//#include <QtCore>
-//#include <QGraphicsScene>
 #include "Grafo.h"
+//#include "grafoseleccion.h"
 
 namespace Ui
 {
@@ -17,6 +15,8 @@ class Graficador : public QWidget
     Q_OBJECT
 
 public:
+    int tipo_grafo;
+
     explicit Graficador(QWidget *parent = 0);
     ~Graficador();
 
@@ -32,6 +32,7 @@ private slots:
 private:
     Ui::Graficador *ui;
     Grafo<QString>* grafo;
+    //GrafoSeleccion* grafoSeleccion;
 };
 
 #endif // GRAFICADOR_H

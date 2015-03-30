@@ -7,6 +7,8 @@ Graficador::Graficador(QWidget *parent) : QWidget(parent), ui(new Ui::Graficador
     grafo = new Grafo<QString>();
     ui->GrafoView->setScene(grafo);
     grafo->setSceneRect(0, 0, 851, 691);
+   // grafoSeleccion = new GrafoSeleccion;
+    //grafoSeleccion->show();
 }
 
 Graficador::~Graficador()
@@ -19,9 +21,11 @@ void Graficador::on_btnAgregarVertice_clicked()
     if(ui->lineEditVerticeValor->text() != "")
     {
         grafo->agregarVertice(ui->lineEditVerticeValor->text());
+        //tipo_grafo = grafoSeleccion->opcion;
     }
 
     ui->lineEditVerticeValor->setText("");
+    std::cout << tipo_grafo << std::endl;
 }
 
 void Graficador::on_btnAgregarArista_clicked()
@@ -58,6 +62,12 @@ void Graficador::on_btnEliminarArista_clicked()
         QString origen = ui->lineEditEliminarAristaOrigen->text();
         QString destino = ui->lineEditEliminarAristaDestino->text();
 
-        grafo->eliminarArista(origen, destino);
+        if(tipo_grafo == 1)
+        {
+            grafo->eliminarArista(origen, destino);
+        }
     }
+
+    ui->lineEditEliminarAristaOrigen->setText("");
+    ui->lineEditEliminarAristaDestino->setText("");
 }

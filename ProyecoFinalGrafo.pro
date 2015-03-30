@@ -15,13 +15,16 @@ TEMPLATE = app
 SOURCES += main.cpp\
         graficador.cpp \
     Lista.cpp \
-    Nodo.cpp
+    Nodo.cpp \
+    grafoseleccion.cpp
 
 HEADERS  += graficador.h \
     Arista.h \
     Grafo.h \
     Lista.h \
     Nodo.h \
-    Vertice.h
+    Vertice.h \
+    grafoseleccion.h
 
-FORMS    += graficador.ui
+FORMS    += graficador.ui \
+    grafoseleccion.ui
