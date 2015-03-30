@@ -84,6 +84,8 @@ int Lista<T>::obtenerPosicion(T valor)
 
         temporal = temporal->next;
     }
+
+    return -1;
 }
 
 template<class T>

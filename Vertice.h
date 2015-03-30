@@ -53,7 +53,12 @@ public:
                 QGraphicsEllipseItem* punto = puntos.obtenerValor(i);
                 arista->line->setLine(arista->origen->pos().x()+50, arista->origen->pos().y()+50, pos().x(), pos().y()+50);
                 arista->text->setPos((arista->origen->pos().x() + pos().x())/2, (arista->origen->pos().y() + pos().y())/2);
-                punto->setRect( pos().x(), pos().y()+50, 6, 6);
+                //punto->setRect( pos().x(), pos().y()+50, 6, 6);
+            }
+
+            for(int i = 0; i < puntos.getCantidad(); i++)
+            {
+                puntos.obtenerValor(i)->setRect( pos().x(), pos().y()+50, 6, 6);
             }
         }
 

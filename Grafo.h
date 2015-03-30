@@ -91,9 +91,159 @@ public:
                 Arista<T>* arista2 = new Arista<T>(ver_destino, ver_origen, peso);
                 aristas.agregar(arista2);
                 ver_destino->aristas.agregar(arista2);
-                //ver_origen->aristas_destino.agregar(arista2);
+                ver_origen->aristas_destino.agregar(arista2);
             }
         }
+    }
+
+    void eliminarAristaNoDirigido(T origen, T destino)
+    {
+        Vertice<T>* ver_origen = obtenerVertice(origen);
+        Vertice<T>* ver_destino = obtenerVertice(destino);
+        Arista<T>* arista = NULL;
+        Arista<T>* arista2 = NULL;
+
+        for(int i = 0; i < ver_origen->aristas.getCantidad(); i++)
+        {
+            if(ver_origen->aristas.obtenerValor(i)->destino == ver_destino)
+            {
+                ver_origen->aristas.eliminar(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < ver_origen->aristas_destino.getCantidad(); i++)
+        {
+            if(ver_origen->aristas_destino.obtenerValor(i)->origen == ver_destino)
+            {
+                ver_origen->aristas_destino.eliminar(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < ver_destino->aristas.getCantidad(); i++)
+        {
+            if(ver_destino->aristas.obtenerValor(i)->destino == ver_origen)
+            {
+                ver_destino->aristas.eliminar(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < ver_destino->aristas_destino.getCantidad(); i++)
+        {
+            if(ver_destino->aristas_destino.obtenerValor(i)->origen == ver_origen)
+            {
+                ver_destino->aristas_destino.eliminar(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < aristas.getCantidad(); i++)
+        {
+            if(aristas.obtenerValor(i)->origen == ver_origen && aristas.obtenerValor(i)->destino == ver_destino)
+            {
+                arista = aristas.obtenerValor(i);
+                aristas.eliminar(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < aristas.getCantidad(); i++)
+        {
+            if(aristas.obtenerValor(i)->origen == ver_destino && aristas.obtenerValor(i)->destino == ver_origen)
+            {
+                arista2 = aristas.obtenerValor(i);
+                aristas.eliminar(i);
+                break;
+            }
+        }
+
+        if(arista != NULL && arista2 != NULL)
+        {
+            delete arista;
+            delete arista2;
+        }
+    }
+
+    void eliminarArista(T origen, T destino)
+    {
+        Vertice<T>* ver_origen = obtenerVertice(origen);
+        Vertice<T>* ver_destino = obtenerVertice(destino);
+        Arista<T>* arista = NULL;
+
+        for(int i = 0; i < ver_origen->aristas.getCantidad(); i++)
+        {
+            if(ver_origen->aristas.obtenerValor(i)->destino == ver_destino)
+            {
+                removeItem(ver_origen->aristas.obtenerValor(i)->line);
+                removeItem(ver_origen->aristas.obtenerValor(i)->text);
+                ver_origen->aristas.eliminar(i);
+                break;
+            }
+        }
+
+        for(int i = 0; i < ver_destino->aristas_destino.getCantidad(); i++)
+        {
+            if(ver_destino->aristas_destino.obtenerValor(i)->origen == ver_origen)
+            {
+                ver_destino->aristas_destino.eliminar(i);
+
+                if(ver_destino->puntos.getCantidad() > 0)
+                {
+                    removeItem(ver_destino->puntos.obtenerValor(ver_destino->puntos.getCantidad()-1));
+                    ver_destino->puntos.eliminar(ver_destino->puntos.getCantidad()-1);
+                }
+
+                break;
+            }
+        }
+
+        for(int i = 0; i < aristas.getCantidad(); i++)
+        {
+            if(aristas.obtenerValor(i)->origen == ver_origen && aristas.obtenerValor(i)->destino == ver_destino)
+            {
+                arista = aristas.obtenerValor(i);
+                aristas.eliminar(i);
+                break;
+            }
+        }
+
+        if(arista != NULL)
+            delete arista;
+    }
+
+    void eliminarVertice(T valor)
+    {
+        Vertice<T>* vertice = obtenerVertice(valor);
+
+        for(int i = 0; i < vertices.getCantidad(); i++)
+        {
+            if(vertices.obtenerValor(i) == vertice)
+                continue;
+
+            eliminarArista(vertice->valor, vertices.obtenerValor(i)->valor);
+        }
+
+        for(int i = 0; i < vertices.getCantidad(); i++)
+        {
+            if(vertices.obtenerValor(i) == vertice)
+                continue;
+
+            eliminarArista(vertices.obtenerValor(i)->valor, vertice->valor);
+        }
+
+        for(int i = 0; i < vertices.getCantidad(); i++)
+        {
+            if(vertices.obtenerValor(i) == vertice)
+            {
+                vertices.eliminar(i);
+                break;
+            }
+        }
+
+        removeItem(vertice);
+        delete vertice;
     }
 
     int** crearMatrizAdyacencia()

@@ -34,4 +34,30 @@ void Graficador::on_btnAgregarArista_clicked()
 
         grafo->agregarArista(origen, destino, peso, false);
     }
+
+    ui->lineEditOrigen->setText("");
+    ui->lineEditDestino->setText("");
+    ui->lineEditPeso->setText("");
+}
+
+void Graficador::on_btnEliminarVertice_clicked()
+{
+    if(ui->lineEditEliminarVertice->text() != "")
+    {
+        QString vertice_valor = ui->lineEditEliminarVertice->text();
+        grafo->eliminarVertice(vertice_valor);
+    }
+
+    ui->lineEditEliminarVertice->setText("");
+}
+
+void Graficador::on_btnEliminarArista_clicked()
+{
+    if(ui->lineEditEliminarAristaOrigen->text() != "" && ui->lineEditEliminarAristaDestino->text() != "")
+    {
+        QString origen = ui->lineEditEliminarAristaOrigen->text();
+        QString destino = ui->lineEditEliminarAristaDestino->text();
+
+        grafo->eliminarArista(origen, destino);
+    }
 }

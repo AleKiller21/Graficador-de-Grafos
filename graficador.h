@@ -25,6 +25,10 @@ private slots:
 
     void on_btnAgregarArista_clicked();
 
+    void on_btnEliminarVertice_clicked();
+
+    void on_btnEliminarArista_clicked();
+
 private:
     Ui::Graficador *ui;
     Grafo<QString>* grafo;

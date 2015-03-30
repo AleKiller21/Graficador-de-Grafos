@@ -16,6 +16,7 @@ public:
     QGraphicsLineItem* line;
     QGraphicsTextItem* text;
     int peso;
+    bool dirigido;
 
     Arista(Vertice<T>* origen, Vertice<T>* destino, int peso)
     {
