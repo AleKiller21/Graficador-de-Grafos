@@ -157,7 +157,7 @@
   <widget class="QPushButton" name="btnMatrizAdyacencia">
    <property name="geometry">
     <rect>
-     <x>980</x>
+     <x>1050</x>
      <y>430</y>
      <width>241</width>
      <height>61</height>
@@ -175,11 +175,14 @@
    </property>
   </widget>
   <widget class="QComboBox" name="cmbAlgoritmos">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="geometry">
     <rect>
      <x>870</x>
      <y>430</y>
-     <width>91</width>
+     <width>121</width>
      <height>21</height>
     </rect>
    </property>
@@ -213,6 +216,19 @@
      <string>Kruskal</string>
     </property>
    </item>
+  </widget>
+  <widget class="QComboBox" name="cmbOrigenes">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="geometry">
+    <rect>
+     <x>870</x>
+     <y>470</y>
+     <width>121</width>
+     <height>21</height>
+    </rect>
+   </property>
   </widget>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

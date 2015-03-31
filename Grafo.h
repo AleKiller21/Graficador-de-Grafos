@@ -100,22 +100,8 @@ public:
                 ver_destino->puntos.agregar(punto);
             }
 
-//            arista->line = addLine(ver_origen->pos().x()+50, ver_origen->pos().y()+50, ver_destino->pos().x(), ver_destino->pos().y()+50);
-//            QGraphicsEllipseItem* punto = addEllipse(ver_destino->pos().x(), ver_destino->pos().y()+50, 6, 6, QPen(), QBrush(Qt::SolidPattern));
-//            ver_destino->puntos.agregar(punto);
-
             arista->text = addText(QString::number(peso));
             arista->text->setPos((ver_origen->pos().x() + ver_destino->pos().x())/2, (ver_origen->pos().y() + ver_destino->pos().y())/2);
-
-//            if(no_dirigido)
-//            {
-//                Arista<T>* arista2 = new Arista<T>(ver_destino, ver_origen, peso);
-//                aristas.agregar(arista2);
-//                ver_destino->aristas.agregar(arista2);
-//                ver_origen->aristas_destino.agregar(arista2);
-
-//                arista->line = addLine(ver_origen->pos().x()+100, ver_origen->pos().y()+50, ver_destino->pos().x(), ver_destino->pos().y()+50);
-//            }
         }
     }
 
@@ -330,6 +316,70 @@ public:
 
         return caminos;
     }
+
+    void Prim(int** matriz, int cantidad, int pos_origen, QGraphicsScene* scene)
+        {
+            int visitados[cantidad];
+            int minimo;
+            int u = 0;
+            int v = 0;
+            int total = 0;
+            int pos_y_scene = 0;
+            QGraphicsTextItem* text;
+            QString text_prim;
+
+            for(int i = 0; i < cantidad; i++)
+            {
+                visitados[i] = 0;
+                for(int j = 0; j < cantidad; j++)
+                {
+                    if(matriz[i][j] == 0)
+                        matriz[i][j] = 999;
+                }
+            }
+
+            visitados[pos_origen] = 1;
+
+            //start of algorithm
+            for(int counter = 0; counter < cantidad-1; counter++)
+            {
+                minimo = 999;
+
+                for(int i = 0; i < cantidad; i++)
+                {
+                    if(visitados[i] == 1)
+                    {
+                        for(int j = 0; j < cantidad; j++)
+                        {
+                            if(visitados[j] != 1)
+                            {
+                                if(minimo > matriz[i][j])
+                                {
+                                    minimo = matriz[i][j];
+                                    u = i;
+                                    v = j;
+                                }
+                            }
+                        }
+                    }
+                }
+
+                if(visitados[v] != 1 && minimo != 999)
+                {
+                    visitados[v] = 1;
+                    total+= minimo;
+                    text_prim = "Vertice encontrado: " + vertices.obtenerValor(u)->valor + "->" + vertices.obtenerValor(v)->valor + ": Longitud:" + QString::number(minimo);
+                    text = scene->addText(text_prim);
+                    text->setPos(0, pos_y_scene);
+                    pos_y_scene+= 25;
+                }
+            }
+
+            text_prim = "El peso del Arbol Abarcador de Costo Minimo: " + QString::number(total);
+            pos_y_scene+= 10;
+            text = scene->addText(text_prim);
+            text->setPos(0, pos_y_scene);
+        }
 
     virtual ~Grafo() {}
 };

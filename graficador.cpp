@@ -27,6 +27,7 @@ void Graficador::on_btnAgregarVertice_clicked()
         grafo->agregarVertice(ui->lineEditVerticeValor->text());
     }
 
+    ui->cmbOrigenes->addItem(ui->lineEditVerticeValor->text());
     ui->lineEditVerticeValor->setText("");
 }
 
@@ -59,7 +60,11 @@ void Graficador::on_btnEliminarVertice_clicked()
     if(ui->lineEditEliminarVertice->text() != "")
     {
         QString vertice_valor = ui->lineEditEliminarVertice->text();
+        int pos = grafo->vertices.obtenerPosicion(grafo->obtenerVertice(vertice_valor));
+        if(pos == -1)
+            return;
         grafo->eliminarVertice(vertice_valor);
+        ui->cmbOrigenes->removeItem(pos);
     }
 
     ui->lineEditEliminarVertice->setText("");
@@ -71,6 +76,11 @@ void Graficador::on_btnEliminarArista_clicked()
     {
         QString origen = ui->lineEditEliminarAristaOrigen->text();
         QString destino = ui->lineEditEliminarAristaDestino->text();
+        int pos = grafo->vertices.obtenerPosicion(grafo->obtenerVertice(origen));
+        int pos2 = grafo->vertices.obtenerPosicion(grafo->obtenerVertice(destino));
+
+        if(pos == -1 || pos2 == -1)
+            return;
 
         if(tipo_grafo == 1)
         {
@@ -122,6 +132,12 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
            caminos = grafo->Warshall(matrizAdyacencia, grafo->vertices.getCantidad());
            warshall = true;
            break;
+
+        case 4:
+        {
+            grafo->Prim(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
+            return;
+        }
     }
 
     if(warshall != true)
@@ -133,5 +149,18 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
     {
         grafo->actualizarMatrizEscena<bool>(matrizView, caminos);
         warshall = false;
+    }
+}
+
+void Graficador::on_cmbAlgoritmos_currentIndexChanged(int index)
+{
+    if(index == 4 && grafo->vertices.getCantidad() > 0)
+    {
+        ui->cmbOrigenes->setEnabled(true);
+    }
+
+    else
+    {
+        ui->cmbOrigenes->setEnabled(false);
     }
 }

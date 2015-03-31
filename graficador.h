@@ -30,6 +30,8 @@ private slots:
 
     void on_btnMatrizAdyacencia_clicked();
 
+    void on_cmbAlgoritmos_currentIndexChanged(int index);
+
 private:
     Ui::Graficador *ui;
     Grafo<QString>* grafo;
