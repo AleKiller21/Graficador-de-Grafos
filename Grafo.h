@@ -234,7 +234,8 @@ public:
         return matriz;
     }
 
-    void borrarMatriz(int** matriz)
+    template <typename U>
+    void borrarMatriz(U** matriz)
     {
         int cantidad = vertices.getCantidad();
 
@@ -249,7 +250,8 @@ public:
         delete[] matriz;
     }
 
-    void actualizarMatrizEscena(QGraphicsScene* scene, int** matriz)
+    template <class U>
+    void actualizarMatrizEscena(QGraphicsScene* scene, U** matriz)
     {
         QGraphicsTextItem* peso;
         int pos_x = 0;
@@ -269,6 +271,64 @@ public:
             pos_y+= 25;
             pos_x = 0;
         }
+    }
+
+    void Floyd(int** matriz, int cantidad)
+    {
+        for(int k = 0; k < cantidad; k++)
+        {
+            for(int i = 0; i < cantidad; i++)
+            {
+                for(int j = 0; j < cantidad; j++)
+                {
+                    if((matriz[i][k] * matriz[k][j] != 0) && (i != j))
+                    {
+                        if(matriz[i][k] + matriz[k][j] < matriz[i][j] || matriz[i][j] == 0)
+                        {
+                            matriz[i][j] = matriz[i][k] + matriz[k][j];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    bool** Warshall(int** matriz, int cantidad)
+    {
+        bool** caminos = new bool*[cantidad];
+
+        for(int i = 0; i < cantidad; i++)
+        {
+            caminos[i] = new bool[cantidad];
+        }
+
+        for(int i = 0; i < cantidad; i++)
+        {
+            for(int j = 0; j < cantidad; j++)
+            {
+                if(matriz[i][j] == 0)
+                {
+                    caminos[i][j] = false;
+                }
+
+                else
+                    caminos[i][j] = true;
+            }
+        }
+
+        for(int k = 0; k < cantidad; k++)
+        {
+            for(int i = 0; i < cantidad; i++)
+            {
+                for(int j = 0; j < cantidad; j++)
+                {
+                    if(caminos[i][k] && caminos[k][j] || caminos[i][j])
+                        caminos[i][j] = true;
+                }
+            }
+        }
+
+        return caminos;
     }
 
     virtual ~Grafo() {}

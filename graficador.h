@@ -35,6 +35,8 @@ private:
     Grafo<QString>* grafo;
     QGraphicsScene* matrizView;
     int** matrizAdyacencia;
+    bool** caminos;
+    bool warshall;
 };
 
 #endif // GRAFICADOR_H
