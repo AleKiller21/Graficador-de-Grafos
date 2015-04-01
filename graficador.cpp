@@ -4,7 +4,7 @@
 Graficador::Graficador(QWidget *parent) : QWidget(parent), ui(new Ui::Graficador)
 {
     ui->setupUi(this);
-    grafo = new Grafo<QString>(tipo_grafo);
+    grafo = new Grafo<QString>(this->tipo_grafo);
     ui->GrafoView->setScene(grafo);
     grafo->setSceneRect(0, 0, 851, 691);
     this->matrizView = new QGraphicsScene();
@@ -125,17 +125,30 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
             break;
 
         case 1:
+        {
             grafo->Floyd(matrizAdyacencia, grafo->vertices.getCantidad());
             break;
+        }
 
         case 2:
-           caminos = grafo->Warshall(matrizAdyacencia, grafo->vertices.getCantidad());
-           warshall = true;
-           break;
+        {
+            caminos = grafo->Warshall(matrizAdyacencia, grafo->vertices.getCantidad());
+            warshall = true;
+            break;
+        }
 
         case 4:
         {
             grafo->Prim(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
+            return;
+        }
+
+        case 5:
+        {
+            if(grafo->aristas.getCantidad() == 0)
+                return;
+
+            grafo->Kruskal2(matrizAdyacencia, grafo->vertices.getCantidad(), this->tipo_grafo, matrizView);
             return;
         }
     }
