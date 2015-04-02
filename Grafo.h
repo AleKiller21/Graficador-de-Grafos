@@ -371,6 +371,7 @@ public:
                 text_prim = "Vertice encontrado: " + vertices.obtenerValor(u)->valor + "->" + vertices.obtenerValor(v)->valor + ": Longitud:" + QString::number(minimo);
                 text = scene->addText(text_prim);
                 text->setPos(0, pos_y_scene);
+                text->setFont(QFont("Arial", 12, QFont::Bold));
                 pos_y_scene+= 25;
             }
         }
@@ -379,89 +380,8 @@ public:
         pos_y_scene+= 10;
         text = scene->addText(text_prim);
         text->setPos(0, pos_y_scene);
+        text->setFont(QFont("Arial", 12, QFont::Bold));
     }
-
-//    void Kruskal(int** matriz, int cantidad, int tipo_grafo, QGraphicsScene* scene)
-//    {
-//        int parent[cantidad];
-//        int minimo;
-//        int u = 0;
-//        int v = 0;
-//        int noOfEdges = 1;
-//        int total = 0;
-//        int pos_y_scene = 0;
-//        QString text_kruskal;
-//        QGraphicsTextItem* text;
-
-//        for(int i = 0; i < cantidad; i++)
-//        {
-//            parent[i] = 0;
-
-//            for(int j = 0; j < cantidad; j++)
-//            {
-//                if(matriz[i][j] == 0)
-//                {
-//                    matriz[i][j] = 999;
-//                }
-//            }
-//        }
-
-//        //start of algorithm
-//        while(noOfEdges < cantidad)
-//        {
-//            minimo = 999;
-
-//            for(int i = 0; i < cantidad; i++)
-//            {
-//                for(int j = 0; j < cantidad; j++)
-//                {
-//                    if(matriz[i][j] < minimo)
-//                    {
-//                        minimo = matriz[i][j];
-//                        u = i;
-//                        v = j;
-//                    }
-//                }
-//            }
-
-//            while(parent[u] != 0)
-//            {
-//                u = parent[u];
-//            }
-
-////            while(parent[v] != 0)
-////            {
-////                v = parent[v];
-////            }
-
-//            if(v != u)
-//            {
-//                noOfEdges++;
-//                if(minimo == 999)
-//                    continue;
-//                text_kruskal = "Arista encontrada: " + vertices.obtenerValor(u)->valor + "->" + vertices.obtenerValor(v)->valor + "Minimo: " + QString::number(minimo);
-//                text = scene->addText(text_kruskal);
-//                text->setPos(0, pos_y_scene);
-//                total+= minimo;
-//                parent[v] = u;
-//                pos_y_scene+= 25;
-//            }
-
-//            if(tipo_grafo == 1)
-//            {
-//                matriz[u][v] = 999;
-//            }
-
-//            else
-//            {
-//                matriz[u][v] = matriz[v][u] = 999;
-//            }
-//        }
-
-//        text_kruskal = "El peso del Arbol Abarcador de Costo Minimo: " + QString::number(total);
-//        text = scene->addText(text_kruskal);
-//        text->setPos(0, pos_y_scene);
-//    }
 
     void Kruskal2(int** matriz, int cantidad, int tipo_grafo, QGraphicsScene* scene)
     {
@@ -539,6 +459,7 @@ public:
                 text_kruskal = "Arista encontrada: " + vertices.obtenerValor(u)->valor + "->" + vertices.obtenerValor(v)->valor + "Minimo: " + QString::number(minimo);
                 text = scene->addText(text_kruskal);
                 text->setPos(0, pos_y_scene);
+                text->setFont(QFont("Arial", 12, QFont::Bold));
                 total+= minimo;
                 pos_y_scene+= 25;
 
@@ -588,6 +509,80 @@ public:
         text_kruskal = "El peso del Arbol Abarcador de Costo Minimo: " + QString::number(total);
         text = scene->addText(text_kruskal);
         text->setPos(0, pos_y_scene);
+        text->setFont(QFont("Arial", 12, QFont::Bold));
+    }
+
+    void Dijkstra(int** matriz, int cantidad, int origen, QGraphicsScene* scene)
+    {
+        int distancia[cantidad];
+        int visitados[cantidad];
+        int preD[cantidad];
+        int minimo;
+        int nextNode = 0;
+        QString text_dijkstra;
+        QGraphicsTextItem* text;
+        int pos_x_scene = 0;
+
+        for(int i = 0; i < cantidad; i++)
+        {
+            visitados[i] = 0;
+            preD[i] = 0;
+
+            for(int j = 0; j < cantidad; j++)
+            {
+                if(matriz[i][j] == 0)
+                    matriz[i][j] = 999;
+            }
+        }
+
+        for(int i = 0; i < cantidad; i++)
+        {
+            distancia[i] = matriz[origen][i];
+        }
+
+        distancia[origen] = 0;
+        visitados[origen] = 1;
+
+        //start with the algorithm
+
+        for(int i = 0; i < cantidad; i++)
+        {
+            minimo = 999;
+
+            for(int j = 0; j < cantidad; j++)
+            {
+                if(minimo > distancia[j] && visitados[j] != 1)
+                {
+                    minimo = distancia[j];
+                    nextNode = j;
+                }
+            }
+
+            visitados[nextNode] = 1;
+
+            //actual start of the algorithm
+
+            for(int c = 0; c < cantidad; c++)
+            {
+                if(visitados[c] != 1)
+                {
+                    if(minimo + matriz[nextNode][c] < distancia[c])
+                    {
+                        distancia[c] = minimo + matriz[nextNode][c];
+                        preD[c] = nextNode;
+                    }
+                }
+            }
+        }
+
+        for(int i = 0; i < cantidad; i++)
+        {
+            text_dijkstra = "|" + QString::number(distancia[i]);
+            text = scene->addText(text_dijkstra);
+            text->setPos(pos_x_scene, 0);
+            text->setFont(QFont("Arial", 12, QFont::Bold));
+            pos_x_scene+= 35;
+        }
     }
 
     virtual ~Grafo() {}

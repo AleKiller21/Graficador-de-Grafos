@@ -25,9 +25,9 @@ void Graficador::on_btnAgregarVertice_clicked()
     if(ui->lineEditVerticeValor->text() != "")
     {
         grafo->agregarVertice(ui->lineEditVerticeValor->text());
+        ui->cmbOrigenes->addItem(ui->lineEditVerticeValor->text());
     }
 
-    ui->cmbOrigenes->addItem(ui->lineEditVerticeValor->text());
     ui->lineEditVerticeValor->setText("");
 }
 
@@ -38,6 +38,12 @@ void Graficador::on_btnAgregarArista_clicked()
         QString origen = ui->lineEditOrigen->text();
         QString destino = ui->lineEditDestino->text();
         int peso = ui->lineEditPeso->text().toInt();
+
+        for(int i = 0; i < grafo->aristas.getCantidad(); i++)
+        {
+            if(grafo->aristas.obtenerValor(i)->origen->valor == origen && grafo->aristas.obtenerValor(i)->destino->valor == destino)
+                return;
+        }
 
         if(tipo_grafo == 1)
         {
@@ -137,6 +143,12 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
             break;
         }
 
+        case 3:
+        {
+            grafo->Dijkstra(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
+            return;
+        }
+
         case 4:
         {
             grafo->Prim(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
@@ -167,7 +179,7 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
 
 void Graficador::on_cmbAlgoritmos_currentIndexChanged(int index)
 {
-    if(index == 4 && grafo->vertices.getCantidad() > 0)
+    if((index == 4 || index == 3) && grafo->vertices.getCantidad() > 0)
     {
         ui->cmbOrigenes->setEnabled(true);
     }

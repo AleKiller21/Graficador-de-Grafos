@@ -188,7 +188,7 @@
    </property>
    <item>
     <property name="text">
-     <string>Ninguno</string>
+     <string>Matriz Adyacencia</string>
     </property>
    </item>
    <item>
