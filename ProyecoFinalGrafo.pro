@@ -16,7 +16,8 @@ SOURCES += main.cpp\
         graficador.cpp \
     Lista.cpp \
     Nodo.cpp \
-    grafoseleccion.cpp
+    grafoseleccion.cpp \
+    visualizador.cpp
 
 HEADERS  += graficador.h \
     Arista.h \
@@ -24,7 +25,9 @@ HEADERS  += graficador.h \
     Lista.h \
     Nodo.h \
     Vertice.h \
-    grafoseleccion.h
+    grafoseleccion.h \
+    visualizador.h
 
 FORMS    += graficador.ui \
-    grafoseleccion.ui
+    grafoseleccion.ui \
+    visualizador.ui

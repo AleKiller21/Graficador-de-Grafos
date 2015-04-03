@@ -16,11 +16,15 @@ public:
     Lista<Arista<T>*> aristas_destino;//Aristas que vienen a mi
     Lista<QGraphicsEllipseItem*> puntos;
     int tipo_grafo;
+    int pos_scene_x;
+    int pos_scene_y;
 
     Vertice(T valor, int tipo_grafo)
     {
         this->valor = valor;
         this->tipo_grafo = tipo_grafo;
+        this->pos_scene_x = 0;
+        this->pos_scene_y = 0;
     }
 
     QRectF boundingRect() const
@@ -80,6 +84,9 @@ public:
             {
                 puntos.obtenerValor(i)->setRect( pos().x(), pos().y()+50, 6, 6);
             }
+
+            this->pos_scene_x = pos().x();
+            this->pos_scene_y = pos().y();
         }
 
         return QGraphicsItem::itemChange(change, value);

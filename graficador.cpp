@@ -5,6 +5,7 @@ Graficador::Graficador(QWidget *parent) : QWidget(parent), ui(new Ui::Graficador
 {
     ui->setupUi(this);
     grafo = new Grafo<QString>(this->tipo_grafo);
+    visualizer = new Visualizador(&(grafo->vertices), this->tipo_grafo);
     ui->GrafoView->setScene(grafo);
     grafo->setSceneRect(0, 0, 851, 691);
     this->matrizView = new QGraphicsScene();
@@ -145,22 +146,31 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
 
         case 3:
         {
-            grafo->Dijkstra(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
+            if(!ui->btnVisualizador->isEnabled())
+                ui->btnVisualizador->setEnabled(true);
+
+            this->dijkstra_distancias = grafo->Dijkstra(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
             return;
         }
 
         case 4:
         {
-            grafo->Prim(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
+            if(!ui->btnVisualizador->isEnabled())
+                ui->btnVisualizador->setEnabled(true);
+
+            this->lista_prim = grafo->Prim(matrizAdyacencia, grafo->vertices.getCantidad(), ui->cmbOrigenes->currentIndex(), matrizView);
             return;
         }
 
         case 5:
-        {
+        {            
             if(grafo->aristas.getCantidad() == 0)
                 return;
 
-            grafo->Kruskal2(matrizAdyacencia, grafo->vertices.getCantidad(), this->tipo_grafo, matrizView);
+            if(!ui->btnVisualizador->isEnabled())
+                ui->btnVisualizador->setEnabled(true);
+
+            this->lista_kruskal = grafo->Kruskal2(matrizAdyacencia, grafo->vertices.getCantidad(), this->tipo_grafo, matrizView);
             return;
         }
     }
@@ -175,6 +185,9 @@ void Graficador::on_btnMatrizAdyacencia_clicked()
         grafo->actualizarMatrizEscena<bool>(matrizView, caminos);
         warshall = false;
     }
+
+    if(!ui->btnVisualizador->isEnabled())
+        ui->btnVisualizador->setEnabled(true);
 }
 
 void Graficador::on_cmbAlgoritmos_currentIndexChanged(int index)
@@ -187,5 +200,53 @@ void Graficador::on_cmbAlgoritmos_currentIndexChanged(int index)
     else
     {
         ui->cmbOrigenes->setEnabled(false);
+    }
+}
+
+void Graficador::on_btnVisualizador_clicked()
+{
+    int index = ui->cmbAlgoritmos->currentIndex();
+
+    switch(index)
+    {
+        case 0:
+        {
+            return;
+        }
+
+        case 1:
+        {
+            this->visualizer->show();
+            this->visualizer->showOnScene(this->matrizAdyacencia);
+            break;
+        }
+
+        case 2:
+        {
+            this->visualizer->show();
+            this->visualizer->showOnScene(this->caminos);
+            break;
+        }
+
+        case 3:
+        {
+            this->visualizer->show();
+            this->visualizer->showOnScene(this->dijkstra_distancias, ui->cmbOrigenes->currentIndex());
+            break;
+        }
+
+        case 4:
+        {
+            this->visualizer->show();
+            this->visualizer->showOnScene(this->lista_prim);
+            break;
+        }
+
+        case 5:
+        {
+            this->visualizer->show();
+            this->visualizer->showOnScene(this->lista_kruskal);
+            break;
+        }
     }
 }

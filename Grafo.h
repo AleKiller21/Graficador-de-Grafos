@@ -317,7 +317,7 @@ public:
         return caminos;
     }
 
-    void Prim(int** matriz, int cantidad, int pos_origen, QGraphicsScene* scene)
+    Lista<Arista<T>*>* Prim(int** matriz, int cantidad, int pos_origen, QGraphicsScene* scene)
     {
         int visitados[cantidad];
         int minimo;
@@ -327,6 +327,7 @@ public:
         int pos_y_scene = 0;
         QGraphicsTextItem* text;
         QString text_prim;
+        Lista<Arista<T>*>* lista = new Lista<Arista<T>*>();//La ocupo mas adelante para poder mostrar la representacion en la ventana de Visualizador
 
         for(int i = 0; i < cantidad; i++)
         {
@@ -373,6 +374,7 @@ public:
                 text->setPos(0, pos_y_scene);
                 text->setFont(QFont("Arial", 12, QFont::Bold));
                 pos_y_scene+= 25;
+                lista->agregar(new Arista<T>(vertices.obtenerValor(u), vertices.obtenerValor(v), minimo));
             }
         }
 
@@ -381,9 +383,11 @@ public:
         text = scene->addText(text_prim);
         text->setPos(0, pos_y_scene);
         text->setFont(QFont("Arial", 12, QFont::Bold));
+
+        return lista;
     }
 
-    void Kruskal2(int** matriz, int cantidad, int tipo_grafo, QGraphicsScene* scene)
+    Lista<Arista<T>*>* Kruskal2(int** matriz, int cantidad, int tipo_grafo, QGraphicsScene* scene)
     {
         int minimo;
         int u = 0;
@@ -394,6 +398,7 @@ public:
         Lista<Lista<Vertice<T>*>*> lista;
         QString text_kruskal;
         QGraphicsTextItem* text;
+        Lista<Arista<T>*>* lista_aristas = new Lista<Arista<T>*>();//La ocupo mas adelante para poder mostrar la representacion en la ventana de Visualizador
 
         for(int i = 0; i < cantidad; i++)
         {
@@ -456,12 +461,15 @@ public:
             if(v != u)
             {
                 noOfEdges++;
+                if(minimo == 999)
+                    continue;
                 text_kruskal = "Arista encontrada: " + vertices.obtenerValor(u)->valor + "->" + vertices.obtenerValor(v)->valor + "Minimo: " + QString::number(minimo);
                 text = scene->addText(text_kruskal);
                 text->setPos(0, pos_y_scene);
                 text->setFont(QFont("Arial", 12, QFont::Bold));
                 total+= minimo;
                 pos_y_scene+= 25;
+                lista_aristas->agregar(new Arista<T>(vertices.obtenerValor(u), vertices.obtenerValor(v), minimo));
 
                 Lista<Vertice<T>*> lista_temporal;
                 int posicion_lista_borrar;
@@ -510,11 +518,14 @@ public:
         text = scene->addText(text_kruskal);
         text->setPos(0, pos_y_scene);
         text->setFont(QFont("Arial", 12, QFont::Bold));
+
+        return lista_aristas;
     }
 
-    void Dijkstra(int** matriz, int cantidad, int origen, QGraphicsScene* scene)
+    int* Dijkstra(int** matriz, int cantidad, int origen, QGraphicsScene* scene)
     {
-        int distancia[cantidad];
+        //int distancia[cantidad];
+        int* distancia = new int[cantidad];
         int visitados[cantidad];
         int preD[cantidad];
         int minimo;
@@ -583,6 +594,8 @@ public:
             text->setFont(QFont("Arial", 12, QFont::Bold));
             pos_x_scene+= 35;
         }
+
+        return distancia;
     }
 
     virtual ~Grafo() {}
