@@ -1,4 +1,3 @@
-# Graficador-de-Grafos
-Grafo
+# Graficador-de-Grafos/Graph Visualizer
 
-Estructura de Datos - Proyecto 2
+Graph visualizer which lets you see how will the graph be drawn when using certain algorithms like Floyd and Dijkstra.
